@@ -1,0 +1,10 @@
+{
+  "name": "LearnNodeJS",
+  "version": "0.1.0",
+  "description": "we learn nodejs",
+  "main": "index.js",
+  "repository": "https://github.com/PhuPT02/LearnNodeJS.git",
+  "author": "",
+  "license": "MIT",
+  "private": true
+}
