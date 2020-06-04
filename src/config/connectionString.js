@@ -1,1 +1,5 @@
-exports.Uri = "mongodb+srv://LearnNode:phu147@cluster0-haxly.mongodb.net/mongoDB?retryWrites=true&w=majority";
+
+const uriOnline = "mongodb+srv://learnnodejs:phu147@cluster0-xl21i.mongodb.net/mongodb?retryWrites=true&w=majority";
+const uriLocal = "mongodb://localhost:27017/test";
+
+exports.Uri = uriOnline ;
