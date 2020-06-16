@@ -5,3 +5,9 @@ exports.getAll = (req, res, next) => {
     .then(user => res.send({ success: true, user }))
     .catch(res.onError)
 }
+
+exports.createUser = () =>{
+    userService.createUser()
+    .then(user => res.send({ success: true, user }))
+    .catch(res.onError)
+};

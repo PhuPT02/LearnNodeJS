@@ -1,9 +1,10 @@
-const { User } = require('../models/user.model');
+const { userRepository } = require('../repositories/user.repository');
 const { MyError } = require('../helpers/handleError/myError')
+const { Role } = require('../models/role.model');
 
 exports.getAll = () => {
     try {
-        return User.find({});
+        return userRepository.getAll();
     } catch (error) {
         throw new MyError(error.message, 500);
     }
