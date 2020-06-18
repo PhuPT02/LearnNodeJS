@@ -25,11 +25,10 @@ exports.removeUser = (_id) => {
 
 exports.login = async (email, passowrd) => {
     const user = await User.findOne({ email });
-    console.log(user)
-    if (!user) return;
+    if (!user) return false;
 
     const comparePassword = await compare(passowrd, user.password);
-    if (!comparePassword) return;
+    if (!comparePassword) return false;
     
     return user;
 };
