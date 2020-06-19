@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const onError = require('../src/middleware/onError');
+const onError = require('./core/middleware/onError');
 const { userRouter } = require('../src/routers/user.route');
 
 const app = express();

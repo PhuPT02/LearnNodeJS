@@ -1,7 +1,9 @@
 const { hash } = require("bcryptjs");
-const { sign, verify } = require("../helpers/login/jwt.helper");
-const { MyError } = require("../helpers/handleError/myError");
+const { sign } = require("../core/helpers/login/jwt.helper");
+const { MyError } = require("../core/helpers/handleError/myError");
 const userRepository = require("../repositories/user.repository");
+const { LoginResponse } = require('../models/response/user/login.response');
+const loginResponse = require("../models/response/user/login.response");
 
 exports.getAll = () => {
   return userRepository.getAll();
@@ -32,7 +34,7 @@ exports.deleteUser = async (_id) => {
 exports.login = async (email, password) => {
   const login = await userRepository.login(email, password);
   if (!login) throw new MyError("USER_INFO_INVALID", 400);
-  login.token = await sign({ email: login.email });
-  console.log(login.token);
-  return login;
+  let user = new LoginResponse(login);
+  user.token = await sign({_id : user._id.toString()});
+  return user;
 };

@@ -16,6 +16,6 @@ exports.createUser = (req, res, next) => {
 exports.login = (req,res,next) =>{
     const { email, password } = req.body;
     userService.login(email, password)
-    .then(login => res.send({ success: true, login }))
+    .then(user => res.send({ success: true, user }))
     .catch(res.onError);
 }

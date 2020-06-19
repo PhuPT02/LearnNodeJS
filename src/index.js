@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-
 const { app } = require('./app');
-const connection = require('./configuration/connection.config');
+const connection = require('./core/configuration/connectionString');
 
 mongoose.connect(connection.Uri, connection.optionsConnectMongo)
     .then(() => {

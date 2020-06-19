@@ -1,6 +1,5 @@
-const { User } = require("../models/user.model");
-const { hash, compare } = require("bcryptjs");
-const { MyError } = require("../helpers/handleError/myError");
+const { User } = require("../database/user.database");
+const { compare } = require('bcryptjs');
 
 exports.getAll = () => {
     return User.find({});
@@ -29,6 +28,5 @@ exports.login = async (email, passowrd) => {
 
     const comparePassword = await compare(passowrd, user.password);
     if (!comparePassword) return false;
-    
     return user;
 };
