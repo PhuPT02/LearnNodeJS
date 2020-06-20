@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const { app } = require('./app');
 const connection = require('./config/connection.config');
 const host = process.env.HOST || "127.0.0.1";
