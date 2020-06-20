@@ -5,4 +5,7 @@ ThienNg
 DucLH
 
 # Install
-- npm install
+$ npm install
+
+# Start server
+$ npm run serve
