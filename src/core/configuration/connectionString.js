@@ -7,5 +7,5 @@ exports.optionsConnectMongo = {
     useUnifiedTopology: true
 }
 
-exports.Uri = uriOnline ;
+exports.Uri = uriLocal ;
 
