@@ -8,14 +8,16 @@ exports.getAll = (req, res, next) => {
 };
 
 exports.createUser = (req, res, next) => {
-  userService.createUser(req.body)
-  .then(user => res.send({ success: true, user }))
-  .catch(res.onError)
+  userService
+    .createUser(req.body)
+    .then((user) => res.send({ success: true, user }))
+    .catch(res.onError);
 };
 
-exports.login = (req,res,next) =>{
-    const { email, password } = req.body;
-    userService.login(email, password)
-    .then(user => res.send({ success: true, user }))
+exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  userService
+    .login(email, password)
+    .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
-}
+};

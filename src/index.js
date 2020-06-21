@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { app } = require('./app');
-const connection = require('./config/connection.config');
+const connection = require('./core/configuration/connectionString');
 const host = process.env.HOST || "127.0.0.1";
 const port = process.env.PORT || 3000;
 
