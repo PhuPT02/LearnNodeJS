@@ -7,7 +7,7 @@ const isAuthor = require('./core/middleware/isAuth.middleware');
 const app = express();
 
 app.use(bodyParser.json());
-app.use(isAuthor);
+// app.use(isAuthor);
 app.use(onError);
 
 app.use('/user', userRouter);
