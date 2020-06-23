@@ -2,6 +2,7 @@ const { hash, compare } = require("bcryptjs");
 const { sign } = require("../core/helpers/login/jwt.helper");
 const { MyError } = require("../core/helpers/handleError/myError");
 const userRepository = require("../repositories/user.repository");
+const { date } = require("@hapi/joi");
 
 exports.getAll = async () => {
   return userRepository.getAll().select("_id name email phone");
@@ -12,14 +13,27 @@ exports.geBytId = (id) => {
 };
 
 exports.createUser = async (user) => {
+
   const { password } = user;
   user.password = await hash(password, 8);
-  return userRepository.createUser(user);
+  user.created_at = new Date();
+  user.created_by = "boss phu";
+  const record = await userRepository.createUser(user);
+  
+  return {
+    _id: record._id,
+    name: record.name,
+    phone: record.phone,
+    email: recore.phone,
+  };
 };
 
 exports.updateUser = async (user) => {
+
+  user.update_at = new Date();
   const record = await userRepository.updateUser(user);
   if (!record) throw new MyError("Can not find user", 404);
+  
   return record;
 };
 
@@ -36,12 +50,14 @@ exports.login = async (email, password) => {
   const comparePassword = await compare(password, user.password);
   if (!comparePassword) throw new MyError("User invalid", 400);
 
+  userRepository.updateLoginDate(user._id);
+
   const token = await sign({ _id: user._id.toString() });
   return {
     _id: user._id,
     name: user.name,
     phone: user.phone,
     email: user.email,
-    token: token
+    token: token,
   };
 };

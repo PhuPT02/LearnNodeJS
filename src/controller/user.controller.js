@@ -1,7 +1,6 @@
 const userService = require("../services/user.service");
-const Joi = require("@hapi/joi");
+const { ABORT_EARLY } = require("../core/configuration/validation.config");
 const { userValidation } = require("../validations/user/user.validation");
-
 
 exports.getAll = (req, res, next) => {
   userService
@@ -11,15 +10,15 @@ exports.getAll = (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
+  const { error } = userValidation.validate(req.body, ABORT_EARLY);
 
-    const { error,errors } = userValidation.validate(req.body,{ abortEarly: false })
+  if (error)
+    return res.status(400).send({ success: false, message: error.details });
 
-  console.log(error);
-
-  // userService
-  //   .createUser(req.body)
-  //   .then((user) => res.send({ success: true, user }))
-  //   .catch(res.onError);
+  userService
+    .createUser(req.body)
+    .then((user) => res.send({ success: true, user }))
+    .catch(res.onError);
 };
 
 exports.login = (req, res, next) => {

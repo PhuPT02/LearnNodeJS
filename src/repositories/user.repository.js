@@ -24,3 +24,7 @@ exports.removeUser = (id) => {
 exports.findOne = (condition) => {
   return User.findOne(condition);
 };
+
+exports.updateLoginDate = (id) => {
+  return User.findByIdAndUpdate({ _id: id }, { last_login: new Date() });
+};
