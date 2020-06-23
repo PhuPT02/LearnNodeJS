@@ -1,6 +1,8 @@
 const userService = require("../services/user.service");
 const Joi = require("@hapi/joi");
 const { userValidation } = require("../validations/user/user.validation");
+
+
 exports.getAll = (req, res, next) => {
   userService
     .getAll()
@@ -9,11 +11,10 @@ exports.getAll = (req, res, next) => {
 };
 
 exports.createUser = async (req, res, next) => {
-  console.log(req.body)
-  try {
-    const value = await userValidation.validateAsync(req.body);
-}
-catch (err) { console.log(err) }
+
+    const { error,errors } = userValidation.validate(req.body,{ abortEarly: false })
+
+  console.log(error);
 
   // userService
   //   .createUser(req.body)
