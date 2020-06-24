@@ -1,19 +1,15 @@
 const userService = require("../services/user.service");
-const { ABORT_EARLY } = require("../core/configuration/validation.config");
 const { userValidation } = require("../validations/user/user.validation");
 
-exports.getAll = (req, res, next) => {
+exports.getAll = (req, res) => {
   userService
     .getAll()
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
 };
 
-exports.createUser = async (req, res, next) => {
-  const { error } = userValidation.validate(req.body, ABORT_EARLY);
-
-  if (error)
-    return res.status(400).send({ success: false, message: error.details });
+exports.createUser = (req, res) => {
+  userValidation(req.body);
 
   userService
     .createUser(req.body)
@@ -21,7 +17,11 @@ exports.createUser = async (req, res, next) => {
     .catch(res.onError);
 };
 
-exports.login = (req, res, next) => {
+exports.updateUser = (req, res) => {
+  userValidation(req.body);
+};
+
+exports.login = (req, res) => {
   const { email, password } = req.body;
   userService
     .login(email, password)

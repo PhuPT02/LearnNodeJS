@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { MyError } = require('../helpers/myError');
+const { MyError } = require('../handleError/myError');
 
 function checkObjectId(...ids) {
     for (let index = 0; index < ids.length; index++) {
@@ -8,7 +8,7 @@ function checkObjectId(...ids) {
         
         const objectId = mongoose.Types.ObjectId.isValid(id);
         if (!objectId) 
-            throw new MyError('INVALID_ID', 400);
+            throw new MyError('Id invalid', 400);
     }
 }
 module.exports = { checkObjectId };
