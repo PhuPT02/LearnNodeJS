@@ -10,7 +10,6 @@ exports.getAll = (req, res) => {
 
 exports.createUser = (req, res) => {
   userValidation(req.body);
-
   userService
     .createUser(req.body)
     .then((user) => res.send({ success: true, user }))
@@ -18,7 +17,14 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
+
   userValidation(req.body);
+  const { id } = req.params;
+  
+  userService
+    .updateUser(id, req.body)
+    .then((user) => res.send({ success: true, user }))
+    .catch(res.onError);
 };
 
 exports.login = (req, res) => {

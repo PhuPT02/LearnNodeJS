@@ -5,10 +5,13 @@ const {
 } = require("../../core/Constant/regularExpression.constant");
 const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 const { MyError } = require('../../core/helpers/handleError/myError');
+const { json } = require("body-parser");
 
 const userValidationSchema = Joi.object().keys({
   name: Joi.string().empty().required().min(2).max(100),
+
   password: Joi.string().required().empty().min(6).max(30),
+
   phone: Joi.string().pattern(new RegExp(_REGEX_PHONE)).message({
     "string.pattern.base": "Phone invalid",
   }),
@@ -25,7 +28,7 @@ const userValidationSchema = Joi.object().keys({
 
 const userValidation = (user) => {
   const { error } = userValidationSchema.validate(user, ABORT_EARLY);
-  if (error) throw MyError(error.details, 400);
+  if (error) throw MyError(JSON.stringify(error.details), 400);
 };
 
 module.exports = { userValidation };
