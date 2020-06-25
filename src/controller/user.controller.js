@@ -5,6 +5,7 @@ const {
 } = require("../validations/user/updateUser.validation");
 
 exports.getAll = (req, res) => {
+  console.log(res.idUser);
   userService
     .getAll()
     .then((user) => res.send({ success: true, user }))
@@ -16,7 +17,7 @@ exports.createUser = async (req, res) => {
   if (error) return res.status(400).send({ success: false, message: error });
 
   userService
-    .createUser(value)
+    .createUser(res.idUser,value)
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
 };

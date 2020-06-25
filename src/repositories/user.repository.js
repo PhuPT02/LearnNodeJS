@@ -1,11 +1,15 @@
 const { User } = require("../models/user.model");
 
 exports.getAll = () => {
-  return User.find({});
+  return User.find({ is_delete: false });
 };
 
 exports.getById = (id) => {
-  return User.findById(id);
+  const options = {
+    _id: id,
+    is_delete: false,
+  };
+  return User.findById(options);
 };
 
 exports.createUser = (user) => {

@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     .then((obj) => {
       if (!obj)
         return res.status(400).send({ success: false, message: "Unauthorized" });
+        res.idUser = obj.id;
       next();
     })
     .catch(() => {
