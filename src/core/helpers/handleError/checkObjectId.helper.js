@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { MyError } = require('../handleError/myError');
+const { MyError } = require('./myError.helper');
 
 function checkObjectId(...ids) {
     for (let index = 0; index < ids.length; index++) {

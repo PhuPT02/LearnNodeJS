@@ -1,5 +1,9 @@
 const userService = require("../services/user.service");
 const { userValidation } = require("../validations/user/user.validation");
+const {
+  updateUserValidation,
+} = require("../validations/user/updateUser.validation");
+
 
 exports.getAll = (req, res) => {
   userService
@@ -8,27 +12,33 @@ exports.getAll = (req, res) => {
     .catch(res.onError);
 };
 
-exports.createUser = (req, res) => {
-  userValidation(req.body);
+exports.createUser = async (req, res) => {
+
+  const { error, value } = await userValidation(req.body);
+  if (error) return res.status(400).send({ success: false, message: error });
+
   userService
-    .createUser(req.body)
+    .createUser(value)
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
 };
 
 exports.updateUser = (req, res) => {
 
-  userValidation(req.body);
   const { id } = req.params;
-  
+  const { error, value } = updateUserValidation(req.body);
+  if (error) return res.status(400).send({ success: false, message: error });
+
   userService
-    .updateUser(id, req.body)
+    .updateUser(id, value)
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
 };
 
 exports.login = (req, res) => {
+
   const { email, password } = req.body;
+  
   userService
     .login(email, password)
     .then((user) => res.send({ success: true, user }))
