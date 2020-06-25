@@ -8,5 +8,5 @@ userRouter.get("/", isAuthor, userController.getAll);
 userRouter.post("/", isAuthor, userController.createUser);
 userRouter.put("/:id", isAuthor, userController.updateUser);
 userRouter.post("/login", userController.login);
-
+userRouter.delete("/:id", isAuthor, userController.removeUser);
 module.exports = { userRouter };

@@ -53,11 +53,11 @@ exports.updateUser = async (id, user) => {
   };
 };
 
-exports.deleteUser = async (id) => {
+exports.removeUser = async (id) => {
   
   checkObjectId(id);
-  const user = await userRepository.removeUser(id);
-  if (!user) throw new MyError("Can not find user", 404);
+  const record = await userRepository.removeUser(id);
+  if (!record) throw new MyError("Can not find user", 404);
 
   return {
     _id: record._id,
