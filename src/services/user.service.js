@@ -1,7 +1,8 @@
 const { hash, compare } = require("bcryptjs");
+const { } = require('../core/Constant/messageHub.helper');
 const { sign } = require("../core/helpers/login/jwt.helper");
 const userRepository = require("../repositories/user.repository");
-const { MyError } = require("../core/helpers/handleError/myError.helper");
+const { MyError } = require("../core/helpers/handleError/handleError.helper");
 const { checkObjectId } = require("../core/helpers/handleError/checkObjectId.helper");
 
 
@@ -18,10 +19,12 @@ exports.createUser = async (idUser,user) => {
   const { password, email, phone } = user;
 
   const checkMail = await userRepository.findOne({ email });
-  if (checkMail) throw new MyError("Email existed", 400);
+  if (checkMail) 
+    throw new MyError("Email existed", 400);
 
   const checkPhone = await userRepository.findOne({ phone });
-  if (checkPhone) throw new MyError("Phone existed", 400);
+  if (checkPhone) 
+    throw new MyError("Phone existed", 400);
 
   user.password = await hash(password, 8);
   user.created_at = new Date();
@@ -43,7 +46,8 @@ exports.updateUser = async (id, user) => {
   user.update_at = new Date();
 
   const record = await userRepository.updateUser(id, user);
-  if (!record) throw new MyError("Can not find user", 404);
+  if (!record) 
+    throw new MyError("Can not find user", 404);
 
   return {
     _id: record._id,
@@ -56,8 +60,10 @@ exports.updateUser = async (id, user) => {
 exports.removeUser = async (id) => {
   
   checkObjectId(id);
+
   const record = await userRepository.updateUser(id,{is_delete : true});
-  if (!record) throw new MyError("Can not find user", 404);
+  if (!record) 
+    throw new MyError("Can not find user", 404);
 
   return {
     _id: record._id,
@@ -68,11 +74,15 @@ exports.removeUser = async (id) => {
 };
 
 exports.login = async (email, password) => {
+
   const user = await userRepository.findOne({ email });
-  if (!user) throw new MyError("Can not find user", 404);
+  if (!user) 
+    throw new MyError("Can not find user", 404);
 
   const comparePassword = await compare(password, user.password);
-  if (!comparePassword) throw new MyError("User invalid", 400);
+  if (!comparePassword) 
+    throw new MyError("User invalid", 400);
+
   userRepository.updateUser(user._id, { last_login: new Date() });
   const token = await sign({ id: user._id.toString() });
 
