@@ -1,8 +1,8 @@
 const { hash, compare } = require("bcryptjs");
 const { sign } = require("../core/helpers/login/jwt.helper");
 const userRepository = require("../repositories/user.repository");
-
-const { MyError } = require("../core/helpers/handleError/handleError.helper");
+const messageService = require('./message.service');
+const { HandleError } = require("../core/helpers/handleError/handleError.helper");
 const { checkObjectId } = require("../core/helpers/handleError/checkObjectId.helper");
 
 
@@ -14,17 +14,21 @@ exports.geBytId = (id) => {
   return userRepository.getById(id).select("_id name email phone");
 };
 
-exports.createUser = async (idUser,user) => {
+exports.createUser = async (idUser, user) => {
 
   const { password, email, phone } = user;
 
   const checkMail = await userRepository.findOne({ email });
-  if (checkMail) 
-    throw new MyError("Email existed", 400);
+  if (checkMail) {
+    const getMessage = messageService.getByKey('email_exist');
+    throw new HandleError(getMessage.message, getMessage.status);
+  }
 
   const checkPhone = await userRepository.findOne({ phone });
-  if (checkPhone) 
-    throw new MyError("Phone existed", 400);
+  if (checkPhone) {
+    const getMessage = messageService.getByKey('phone_exist');
+    throw new HandleError(getMessage.message, getMessage.status);
+  }
 
   user.password = await hash(password, 8);
   user.created_at = new Date();
@@ -41,13 +45,15 @@ exports.createUser = async (idUser,user) => {
 };
 
 exports.updateUser = async (id, user) => {
-  
+
   checkObjectId(id);
   user.update_at = new Date();
 
   const record = await userRepository.updateUser(id, user);
-  if (!record) 
-    throw new MyError("Can not find user", 404);
+  if (!record) {
+    const getMessage = messageService.getByKey('can_not_find_user');
+    throw new HandleError(getMessage.message, getMessage.status);
+  }
 
   return {
     _id: record._id,
@@ -58,12 +64,14 @@ exports.updateUser = async (id, user) => {
 };
 
 exports.removeUser = async (id) => {
-  
+
   checkObjectId(id);
 
-  const record = await userRepository.updateUser(id,{is_delete : true});
-  if (!record) 
-    throw new MyError("Can not find user", 404);
+  const record = await userRepository.updateUser(id, { is_delete: true });
+  if (!record) {
+    const getMessage = messageService.getByKey('can_not_find_user');
+    throw new HandleError(getMessage.message, getMessage.status);
+  }
 
   return {
     _id: record._id,
@@ -76,12 +84,16 @@ exports.removeUser = async (id) => {
 exports.login = async (email, password) => {
 
   const user = await userRepository.findOne({ email });
-  if (!user) 
-    throw new MyError("Can not find user", 404);
+  if (!user) {
+    const getMessage = messageService.getByKey('can_not_find_user');
+    throw new HandleError(getMessage.message, getMessage.status);
+  }
 
   const comparePassword = await compare(password, user.password);
-  if (!comparePassword) 
-    throw new MyError("User invalid", 400);
+  if (!comparePassword) {
+    const getMessage = messageService.getByKey('user_invalid');
+    throw new HandleError(getMessage.message, getMessage.status);
+  }
 
   userRepository.updateUser(user._id, { last_login: new Date() });
   const token = await sign({ id: user._id.toString() });

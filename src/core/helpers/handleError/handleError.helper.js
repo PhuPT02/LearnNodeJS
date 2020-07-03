@@ -1,7 +1,7 @@
-class MyError extends Error {
+class HandleError extends Error {
     constructor(message, statusCode) {
         super(message);
         this.statusCode = statusCode;
     }
 }
-module.exports = { MyError };
+module.exports = { HandleError };

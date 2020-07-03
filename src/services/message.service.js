@@ -4,8 +4,12 @@ exports.getAll = () => {
     return messageRepository.getAll();
 }
 
-exports.getById = (key) => {
-    return messageRepository.getById(key);
+exports.getByKey = async (key) => {
+    const message = await messageRepository.getByKey(key);
+    return {
+        message: message.message_personal,
+        status: message.status 
+    };
 }
 
 exports.UpdateMessage = (id, message_personal) => {
