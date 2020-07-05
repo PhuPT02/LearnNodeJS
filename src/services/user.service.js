@@ -20,13 +20,13 @@ exports.createUser = async (idUser, user) => {
 
   const checkMail = await userRepository.findOne({ email });
   if (checkMail) {
-    const getMessage = messageService.getByKey('email_exist');
+    const getMessage = await messageService.getByKey('email_exist');
     throw new HandleError(getMessage.message, getMessage.status);
   }
 
   const checkPhone = await userRepository.findOne({ phone });
   if (checkPhone) {
-    const getMessage = messageService.getByKey('phone_exist');
+    const getMessage = await messageService.getByKey('phone_exist');
     throw new HandleError(getMessage.message, getMessage.status);
   }
 
@@ -51,7 +51,7 @@ exports.updateUser = async (id, user) => {
 
   const record = await userRepository.updateUser(id, user);
   if (!record) {
-    const getMessage = messageService.getByKey('can_not_find_user');
+    const getMessage = await messageService.getByKey('can_not_find_user');
     throw new HandleError(getMessage.message, getMessage.status);
   }
 
@@ -69,7 +69,7 @@ exports.removeUser = async (id) => {
 
   const record = await userRepository.updateUser(id, { is_delete: true });
   if (!record) {
-    const getMessage = messageService.getByKey('can_not_find_user');
+    const getMessage = await messageService.getByKey('can_not_find_user');
     throw new HandleError(getMessage.message, getMessage.status);
   }
 
@@ -85,13 +85,13 @@ exports.login = async (email, password) => {
 
   const user = await userRepository.findOne({ email });
   if (!user) {
-    const getMessage = messageService.getByKey('can_not_find_user');
+    const getMessage = await messageService.getByKey('can_not_find_user');
     throw new HandleError(getMessage.message, getMessage.status);
   }
 
   const comparePassword = await compare(password, user.password);
   if (!comparePassword) {
-    const getMessage = messageService.getByKey('user_invalid');
+    const getMessage = await messageService.getByKey('user_invalid');
     throw new HandleError(getMessage.message, getMessage.status);
   }
 

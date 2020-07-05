@@ -1,33 +1,30 @@
 const { verify } = require("../helpers/login/jwt.helper");
 const messageService = require('../../services/message.service');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 
   const token = req.body.token || req.headers.token;
 
   if (!token) {
-    const getMessage = messageService.getByKey('miss_token');
-    console.log(getMessage)
-    console.log(1)
-    return res.status(getMessage.status).send({ success: false, message: getMessage.message });
+    const getMessage = await messageService.getByKey('miss_token');
+    const response = { success: false, message: getMessage.message };
+    return res.status(getMessage.status).send(response);
   }
 
   verify(token)
-    .then((obj) => {
+    .then(async (obj) => {
       if (!obj) {
-        const getMessage = messageService.getByKey('unauthorized');
-        console.log(getMessage)
-        console.log(2)
-        return res.status(getMessage.status).send({ success: false, message: getMessage.message });
+        const getMessage = await messageService.getByKey('unauthorized');
+        const response = { success: false, message: getMessage.message };
+        return res.status(getMessage.status).send(response);
       }
 
       res.idUser = obj.id;
       next();
     })
-    .catch(() => {
-      const getMessage = messageService.getByKey('token_invalid');
-      console.log(getMessage)
-      console.log(2)
-      //return res.status(getMessage.status).send({ success: false, message: getMessage.message });
+    .catch(async () => {
+      const getMessage = await messageService.getByKey('token_invalid');
+      const response = { success: false, message: getMessage.message };
+      return res.status(getMessage.status).send(response);
     });
 };
