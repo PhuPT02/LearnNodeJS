@@ -1,5 +1,6 @@
-const { verify } = require("../helpers/login/jwt.helper");
+const { verify } = require("../helpers/jwt.helper");
 const messageService = require('../../services/message.service');
+
 
 module.exports = async (req, res, next) => {
 

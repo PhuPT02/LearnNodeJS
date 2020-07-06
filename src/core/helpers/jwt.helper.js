@@ -3,7 +3,7 @@ const {
   SECRET_KEY,
   EXPRESSED,
   ALGORITHM,
-} = require("../../configuration/jwt.config");
+} = require("../configuration/jwt.config");
 
 exports.sign = async (input) => {
   return new Promise((resolve, reject) => {

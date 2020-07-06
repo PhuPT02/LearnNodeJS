@@ -28,14 +28,14 @@ const userValidationSchema = Joi.object().keys({
   .empty()
   .min(6)
   .max(30)
-  .message({
-    'string.min' : 'max_min_length_password'
+  .messages({
+    'string.min' : 'min_length_password'
   })
   
   ,phone: Joi
   .string()
   .pattern(new RegExp(_REGEX_PHONE))
-  .message({
+  .messages({
     "string.pattern.base": "Phone invalid"
   })
   
@@ -65,8 +65,17 @@ const userValidationSchema = Joi.object().keys({
   .date()
 });
 
-const userValidation = (user) => {
-  return userValidationSchema.validate(user, ABORT_EARLY);
+const userValidation = async (user) => {
+  const erros = [];
+  const { value,error } = await userValidationSchema.validate(user, ABORT_EARLY);
+  if(error){
+
+
+    for(i = 0; i<error.details.length; i++){
+      const getMessage = await messageService.getByKey('')
+    }
+
+  }
 };
 
 module.exports = { userValidation };

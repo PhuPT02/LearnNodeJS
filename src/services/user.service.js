@@ -1,9 +1,9 @@
 const { hash, compare } = require("bcryptjs");
-const { sign } = require("../core/helpers/login/jwt.helper");
+const { sign } = require("../core/helpers/jwt.helper");
 const userRepository = require("../repositories/user.repository");
 const messageService = require('./message.service');
-const { HandleError } = require("../core/helpers/handleError/handleError.helper");
-const { checkObjectId } = require("../core/helpers/handleError/checkObjectId.helper");
+const { HandleError } = require("../core/helpers/handleError.helper");
+const { checkObjectId } = require("../core/helpers/checkObjectId.helper");
 
 
 exports.getAll = async () => {

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const messageService = require('../../../services/message.service');
+const messageService = require('../../services/message.service');
 const { HandleError } = require('./handleError.helper');
 
 async function checkObjectId(...ids) {
