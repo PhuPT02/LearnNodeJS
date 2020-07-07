@@ -3,7 +3,6 @@ const {
   _REGEX_MAIL,
   _REGEX_PHONE,
 } = require("../../core/Constant/regularExpression.constant");
-const messageService = require('../../services/message.service');
 const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 
 
@@ -15,11 +14,11 @@ const userValidationSchema = Joi.object().keys({
   .min(2)
   .max(100)
   .message({
-    'string.base' :'',
-    'string.empty': '',
-    'string.required':'',
-    'string.min':'',
-    'string.max': ''
+    'string.base' :'name_must_be_string',
+    'string.empty': 'name_is_not_empty',
+    'string.required':'name_must_be_required',
+    'string.min':'name_min_length_is_6_character',
+    'string.max': 'name_max_length_is_100_character'
   })
   
   ,password: Joi
@@ -29,7 +28,10 @@ const userValidationSchema = Joi.object().keys({
   .min(6)
   .max(30)
   .messages({
-    'string.min' : 'min_length_password'
+    'string.base': 'password_must_be_string',
+    'string.required' : 'password_must_be_required',
+    'string.min': '',
+    'string.max':''
   })
   
   ,phone: Joi

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const messageService = require('../../services/message.service');
+const { errorsResponse } = require('../Constant/errorsResponse.constant');
 const { HandleError } = require('./handleError.helper');
 
 async function checkObjectId(...ids) {
@@ -9,8 +9,8 @@ async function checkObjectId(...ids) {
 
         const objectId = mongoose.Types.ObjectId.isValid(id);
         if (!objectId) {
-            const getMessage = await messageService.getByKey('');
-            throw new HandleError(getMessage.message, getMessage.status);
+            const error = errorsResponse.id_invalid;
+            throw new HandleError(error.key,error.status);
         }
     }
 }
