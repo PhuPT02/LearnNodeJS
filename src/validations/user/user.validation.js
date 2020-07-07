@@ -1,10 +1,11 @@
 const Joi = require("@hapi/joi");
-const {errorsResponse} = require("../../core/Constant/errorsResponse.constant");
-const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 const {
   _REGEX_MAIL,
   _REGEX_PHONE,
 } = require("../../core/Constant/regularExpression.constant");
+const {errorsResponse} = require("../../core/Constant/errorsResponse.constant");
+const { ABORT_EARLY } = require("../../core/configuration/validation.config");
+const { createErrorObject } = require('../../core/helpers/createErrorObject');
 
 
 const userValidationSchema = Joi.object().keys({
@@ -49,16 +50,9 @@ const userValidationSchema = Joi.object().keys({
 });
 
 const userValidation = async (user) => {
-  const newError = [];
   const { value,error } = await userValidationSchema.validate(user, ABORT_EARLY);
-  for (let index = 0; index < error.details.length; index++) {
-    const element = error.details[index];
-      newError.push({
-        field: element.context.key,
-        message: element.message
-      })
-  }
-  return { value: value, error: newError };
+  const customError = createErrorObject(error);
+  return { value: value, error: customError };
 };
 
 module.exports = { userValidation };

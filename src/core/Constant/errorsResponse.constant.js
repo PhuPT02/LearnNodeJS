@@ -12,7 +12,7 @@ exports.errorsResponse = {
     status: 404 
   },
   user_invalid: { 
-    key: "iser_invalid", 
+    key: "user_invalid", 
     status: 400 
   },
   id_invalid: { 
