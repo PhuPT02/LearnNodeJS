@@ -1,83 +1,64 @@
 const Joi = require("@hapi/joi");
+const {errorsResponse} = require("../../core/Constant/errorsResponse.constant");
+const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 const {
   _REGEX_MAIL,
   _REGEX_PHONE,
 } = require("../../core/Constant/regularExpression.constant");
-const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 
 
 const userValidationSchema = Joi.object().keys({
-  name: Joi
-  .string()
-  .empty()
-  .required()
-  .min(2)
-  .max(100)
-  .message({
-    'string.base' :'name_must_be_string',
-    'string.empty': 'name_is_not_empty',
-    'string.required':'name_must_be_required',
-    'string.min':'name_min_length_is_6_character',
-    'string.max': 'name_max_length_is_100_character'
-  })
-  
-  ,password: Joi
-  .string()
-  .required()
-  .empty()
-  .min(6)
-  .max(30)
-  .messages({
-    'string.base': 'password_must_be_string',
-    'string.required' : 'password_must_be_required',
-    'string.min': '',
-    'string.max':''
-  })
-  
-  ,phone: Joi
-  .string()
-  .pattern(new RegExp(_REGEX_PHONE))
-  .messages({
-    "string.pattern.base": "Phone invalid"
-  })
-  
-,email: Joi
-.string()
-.pattern(new RegExp(_REGEX_MAIL))
-.message({
-    "string.pattern.base": "Email invalid",
+  name: Joi.string().empty().required().min(2).max(100).messages({
+
+    "string.base": errorsResponse.user_name_must_be_string.key,
+    "string.empty": errorsResponse.user_name_is_not_empty.key,
+    "string.required": errorsResponse.user_name_must_be_required.key,
+    "string.min": errorsResponse.user_name_min_length_is_2_characters.key,
+    "string.max": errorsResponse.user_name_max_length_is_100_characters.key
+
   }),
 
-  is_delete: Joi
-  .boolean()
+  password: Joi.string().required().empty().min(6).max(30).messages({
 
-  ,last_login: Joi
-  .date()
+    "string.base": errorsResponse.user_password_must_be_string.key,
+    "string.required": errorsResponse.user_password_must_be_required.key,
+    "string.min": errorsResponse.user_password_min_length_is_6_characters.key,
+    "string.max": errorsResponse.user_password_max_length_is_30_characters.key
 
-  ,is_admin: Joi
-  .boolean()
-  
-  ,created_by: Joi
-  .date()
+  }),
 
-  ,created_at: Joi
-  .date()
-  
-  ,update_at: Joi
-  .date()
+  phone: Joi.string().pattern(new RegExp(_REGEX_PHONE)).messages({
+    "string.pattern.base": errorsResponse.user_phone_invalid.key
+  }),
+
+  email: Joi.string().pattern(new RegExp(_REGEX_MAIL)).messages({
+    "string.pattern.base": errorsResponse.user_email_invalid.key
+  }),
+
+  // is_delete: Joi.boolean(),
+
+  // last_login: Joi.date(),
+
+   is_admin: Joi.boolean(),
+
+  // created_by: Joi.date(),
+
+  // created_at: Joi.date(),
+
+  // update_at: Joi.date(),
 });
 
 const userValidation = async (user) => {
-  const erros = [];
+  const newError = [];
   const { value,error } = await userValidationSchema.validate(user, ABORT_EARLY);
-  if(error){
-
-
-    for(i = 0; i<error.details.length; i++){
-      const getMessage = await messageService.getByKey('')
-    }
-
+  for (let index = 0; index < error.details.length; index++) {
+    const element = error.details[index];
+      newError.push({
+        field: element.context.key,
+        message: element.message
+      })
   }
+  return { value: value, error: newError };
 };
 
 module.exports = { userValidation };
