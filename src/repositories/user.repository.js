@@ -1,32 +1,30 @@
-const { User } = require("../database/user.database");
-const { compare } = require('bcryptjs');
+const { User } = require("../models/user.model");
 
 exports.getAll = () => {
-    return User.find({});
+  return User.find({ is_delete: false });
 };
 
 exports.getById = (id) => {
-    return User.findById(id);
+  const options = {
+    _id: id,
+    is_delete: false,
+  };
+  return User.findById(options);
 };
 
-exports.createUser = (userViewModel) => {
-    const user = new User(userViewModel);
-    return user.save();
+exports.createUser = (user) => {
+  const record = new User(user);
+  return record.save();
 };
 
-exports.updateUser = (_id, userViewModel) => {
-    return User.findByIdAndUpdate(_id, userViewModel);
+exports.updateUser = (id, user) => {
+  return User.findByIdAndUpdate(id, user, { new: true });
 };
 
-exports.removeUser = (_id) => {
-    return User.findByIdAndRemove(_id);
+exports.removeUser = (id) => {
+  return User.findByIdAndRemove(id);
 };
 
-exports.login = async (email, passowrd) => {
-    const user = await User.findOne({ email });
-    if (!user) return false;
-
-    const comparePassword = await compare(passowrd, user.password);
-    if (!comparePassword) return false;
-    return user;
+exports.findOne = (condition) => {
+  return User.findOne(condition);
 };

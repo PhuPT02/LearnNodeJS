@@ -4,8 +4,9 @@ const uriLocal = "mongodb://localhost:27017/test";
 
 exports.optionsConnectMongo = {
     useNewUrlParser: true, 
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }
 
-exports.Uri = uriLocal ;
+exports.Uri = uriLocal;
 

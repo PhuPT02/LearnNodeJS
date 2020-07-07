@@ -1,8 +1,8 @@
 # LearnNodeJS
-Tác giả:
-PhuPT
-ThienNg
-DucLH
+
 
 # Install
-- npm install
+- Down load nodejs  https://nodejs.org/en/ 
+- run: npm install or yarn install
+- start server: node .\src\index.js  or yarn serve
+- 

@@ -1,40 +1,108 @@
-const { hash } = require("bcryptjs");
-const { sign } = require("../core/helpers/login/jwt.helper");
-const { MyError } = require("../core/helpers/handleError/myError");
-const userRepository = require("../repositories/user.repository");
-const { LoginResponse } = require('../models/response/user/login.response');
-const loginResponse = require("../models/response/user/login.response");
+const { hash, compare } = require("bcryptjs");
+const { sign } = require("../core/helpers/jwt.helper");
+const  userRepository  = require("../repositories/user.repository");
+const { errorsResponse } = require('../core/Constant/errorsResponse.constant');
+const { HandleError } = require("../core/helpers/handleError.helper");
+const { checkObjectId } = require("../core/helpers/checkObjectId.helper");
 
-exports.getAll = () => {
-  return userRepository.getAll();
+
+exports.getAll = async () => {
+  return userRepository.getAll().select("_id name email phone");
 };
 
-exports.geBytId = (_id) => {
-  return userRepository.getById(_id);
+exports.geBytId = (id) => {
+  return userRepository.getById(id).select("_id name email phone");
 };
 
-exports.createUser = async (userViewModel) => {
-  const { password } = userViewModel;
-  userViewModel.password = await hash(password, 8);
-  return userRepository.createUser(userViewModel);
+exports.createUser = async (idUser, user) => {
+
+  const { password, email, phone } = user;
+
+  const checkMail = await userRepository.findOne({ email });
+  if (checkMail) {
+    const error = errorsResponse.email_exist;
+    throw new HandleError(error.key, error.status);
+  }
+
+  const checkPhone = await userRepository.findOne({ phone });
+  if (checkPhone) {
+    const error = errorsResponse.phone_exist;
+    throw new HandleError(error.key, error.status);
+  }
+
+  user.password = await hash(password, 8);
+  user.created_at = new Date();
+  user.created_by = idUser;
+
+  const record = await userRepository.createUser(user);
+
+  return {
+    _id: record._id,
+    name: record.name,
+    phone: record.phone,
+    email: record.email,
+  };
 };
 
-exports.updateUser = async (userViewModel) => {
-  const user = await userRepository.updateUser(userViewModel);
-  if (!user) throw new MyError("CAN_NOT_FIND_USER", 404);
-  return user;
+exports.updateUser = async (id, user) => {
+
+  checkObjectId(id);
+  user.update_at = new Date();
+
+  const record = await userRepository.updateUser(id, user);
+  if (!record) {
+    const error = errorsResponse.can_not_find_user;
+    throw new HandleError(error.key, error.status);
+  }
+
+  return {
+    _id: record._id,
+    name: record.name,
+    phone: record.phone,
+    email: record.email,
+  };
 };
 
-exports.deleteUser = async (_id) => {
-  const user = await userRepository.removeUser(_id);
-  if (!user) throw new MyError("CAN_NOT_FIND_USER", 404);
-  return user;
+exports.removeUser = async (id) => {
+
+  checkObjectId(id);
+
+  const record = await userRepository.updateUser(id, { is_delete: true });
+  if (!record) {
+    const error = errorsResponse.can_not_find_user;
+    throw new HandleError(error.key, error.status);
+  }
+
+  return {
+    _id: record._id,
+    name: record.name,
+    phone: record.phone,
+    email: record.email,
+  };
 };
 
 exports.login = async (email, password) => {
-  const login = await userRepository.login(email, password);
-  if (!login) throw new MyError("USER_INFO_INVALID", 400);
-  let user = new LoginResponse(login);
-  user.token = await sign({_id : user._id.toString()});
-  return user;
+
+  const user = await userRepository.findOne({ email });
+  if (!user) {
+    const error = errorsResponse.can_not_find_user;
+    throw new HandleError(error.key, error.status);
+  }
+
+  const comparePassword = await compare(password, user.password);
+  if (!comparePassword) {
+    const error = errorsResponse.user_invalid;
+    throw new HandleError(error.key, error.status);
+  }
+
+  userRepository.updateUser(user._id, { last_login: new Date() });
+  const token = await sign({ id: user._id.toString() });
+
+  return {
+    _id: user._id,
+    name: user.name,
+    phone: user.phone,
+    email: user.email,
+    token: token,
+  };
 };
