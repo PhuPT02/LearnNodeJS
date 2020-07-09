@@ -75,4 +75,8 @@ exports.errorsResponse = {
     key: "user_email_invalid",
     status: 400,
   },
+  can_not_find_product: {
+    key: "can_not_find_product",
+    status: 404
+  }
 };

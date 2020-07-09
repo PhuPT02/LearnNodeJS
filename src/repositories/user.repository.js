@@ -22,7 +22,7 @@ exports.updateUser = (id, user) => {
 };
 
 exports.removeUser = (id) => {
-  return User.findByIdAndRemove(id);
+  return User.findByIdAndDelete(id);
 };
 
 exports.findOne = (condition) => {

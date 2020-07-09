@@ -11,6 +11,7 @@ exports.getAll = async () => {
 };
 
 exports.geBytId = (id) => {
+  checkObjectId(id);
   return userRepository.getById(id).select("_id name email phone");
 };
 

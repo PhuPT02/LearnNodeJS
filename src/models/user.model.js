@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { date } = require("@hapi/joi");
+
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -7,14 +7,14 @@ const userSchema = new mongoose.Schema({
     require: true,
     trim: true,
     minlength: 2,
-    maxlength: 100,
+    max: 100,
   },
   password: {
     type: String,
     require: true,
     trim: true,
     minlength: 6,
-    maxlength: 30
+    max: 30
   },
   phone: { 
     type: String,
@@ -45,8 +45,7 @@ const userSchema = new mongoose.Schema({
   created_by: {
     type: String,
     required: true,
-    trim: true,
-    default: date.UTC 
+    trim: true
   },
   created_at: { 
     type: Date,
