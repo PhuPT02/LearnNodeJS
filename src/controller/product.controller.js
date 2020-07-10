@@ -3,7 +3,7 @@ const productService = require('../services/product.service');
 exports.getAll = (req, res) => {
     productService.getAll()
     .then(product => res.send({ success: true, product }))
-    .catch(res.onError)
+    .catch(res.onError);
 };
 
 exports.getById = (req, res) => {

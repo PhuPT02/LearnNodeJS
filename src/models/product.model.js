@@ -35,11 +35,11 @@ const productSchema = new mongoose.Schema({
         trim: true
     }
     , HomeFlag: {
-        type: boolean,
+        type: Boolean,
         default: false,
     }
     , HotFlag: {
-        type: boolean,
+        type: Boolean,
         default: false,
     }
     , ViewCount: {
