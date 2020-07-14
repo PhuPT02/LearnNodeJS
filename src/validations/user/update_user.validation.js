@@ -2,11 +2,11 @@ const Joi = require("@hapi/joi");
 const {
   _REGEX_MAIL,
   _REGEX_PHONE,
-} = require("../../core/Constant/regularExpression.constant");
+} = require("../../core/Constant/regular_expression.constant");
 const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 
 
-const updateUserValidationSchema = Joi.object().keys({
+const updateUserSchema = Joi.object().keys({
   name: Joi
   .string()
   .empty()
@@ -26,7 +26,7 @@ const updateUserValidationSchema = Joi.object().keys({
 });
 
 const updateUserValidation = (user) => {
-  return updateUserValidationSchema.validate(user, ABORT_EARLY);
+  return updateUserSchema.validate(user, ABORT_EARLY);
 };
 
 module.exports = { updateUserValidation };

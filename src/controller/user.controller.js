@@ -1,8 +1,8 @@
 const userService = require("../services/user.service");
-const { userValidation } = require("../validations/user/user.validation");
+const { userValidation } = require("../validations/user/create_user.validation");
 const {
   updateUserValidation,
-} = require("../validations/user/updateUser.validation");
+} = require("../validations/user/update_user.validation");
 
 
 exports.getAll = (req, res) => {
@@ -12,11 +12,11 @@ exports.getAll = (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
-  
+
   const { error, value } = await userValidation(req.body);
   if (error) return res.status(400).send({ success: false, message: error });
 
-  userService.createUser(res.idUser,value)
+  userService.createUser(res.idUser, value)
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
 };
@@ -26,7 +26,7 @@ exports.updateUser = (req, res) => {
   const { error, value } = updateUserValidation(req.body);
   if (error) return res.status(400).send({ success: false, message: error });
   const { id } = req.params;
-  
+
   userService.updateUser(id, value)
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);

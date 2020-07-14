@@ -4,7 +4,6 @@ const {
   _REGEX_PHONE,
 } = require("../../core/Constant/regularExpression.constant");
 const {errorsResponse} = require("../../core/Constant/errorsResponse.constant");
-const { ABORT_EARLY } = require("../../core/configuration/validation.config");
 const { createErrorObject } = require('../../core/helpers/createErrorObject');
 
 
@@ -36,23 +35,12 @@ const userValidationSchema = Joi.object().keys({
     "string.pattern.base": errorsResponse.user_email_invalid.key
   }),
 
-  // is_delete: Joi.boolean(),
-
-  // last_login: Joi.date(),
-
    is_admin: Joi.boolean(),
 
-  // created_by: Joi.date(),
-
-  // created_at: Joi.date(),
-
-  // update_at: Joi.date(),
 });
 
-const userValidation = async (user) => {
-  const { value,error } = await userValidationSchema.validate(user, ABORT_EARLY);
-  const customError = createErrorObject(error);
-  return { value: value, error: customError };
+const userValidation = async (data) => {
+  return createErrorObject(userSchema,data);
 };
 
-module.exports = { userValidation };
+module.exports = { userValidationSchema };

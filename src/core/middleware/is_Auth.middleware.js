@@ -1,5 +1,5 @@
 const { verify } = require("../helpers/jwt.helper");
-const { errorsResponse } = require('../Constant/errorsResponse.constant');
+const { errorsResponse } = require('../Constant/errors_response.constant');
 
 
 module.exports = async (req, res, next) => {

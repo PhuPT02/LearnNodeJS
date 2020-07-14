@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const { errorsResponse } = require('../Constant/errorsResponse.constant');
-const { HandleError } = require('./handleError.helper');
+const { errorsResponse } = require('../Constant/errors_response.constant');
+const { HandleError } = require('./handle_error.helper');
 
-async function checkObjectId(...ids) {
+function checkObjectId(...ids) {
     for (let index = 0; index < ids.length; index++) {
 
         const id = ids[index];

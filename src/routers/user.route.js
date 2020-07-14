@@ -1,5 +1,5 @@
 const express = require("express");
-const isAuthor = require("../core/middleware/isAuth.middleware");
+const isAuthor = require("../core/middleware/is_Auth.middleware");
 const userController = require("../controller/user.controller");
 
 const userRouter = express.Router();
