@@ -1,8 +1,9 @@
 const userService = require("../services/user.service");
-const { userValidation } = require("../validations/user/create_user.validation");
+const { userValidationSchema } = require("../validations/user/create_user.validation");
 const {
-  updateUserValidation,
+  updateUserSchema,
 } = require("../validations/user/update_user.validation");
+const { handleValidation }  = require('../core/helpers/handle_validation');
 
 
 exports.getAll = (req, res) => {
@@ -13,18 +14,21 @@ exports.getAll = (req, res) => {
 
 exports.createUser = async (req, res) => {
 
-  const { error, value } = await userValidation(req.body);
-  if (error) return res.status(400).send({ success: false, message: error });
+  const validation = await handleValidation(userValidationSchema,req.body);
 
-  userService.createUser(res.idUser, value)
+  if(validation.error.length)
+    return res.status(400).send({ success: false, message: validation.error });
+
+  userService.createUser(res.idUser, validation.value)
     .then((user) => res.send({ success: true, user }))
     .catch(res.onError);
 };
 
-exports.updateUser = (req, res) => {
+exports.updateUser = async(req, res) => {
 
-  const { error, value } = updateUserValidation(req.body);
-  if (error) return res.status(400).send({ success: false, message: error });
+  const validation = await handleValidation(updateUserSchema,req.body);
+  if (validation.error.length) 
+    return res.status(400).send({ success: false, message: validation.error });
   const { id } = req.params;
 
   userService.updateUser(id, value)

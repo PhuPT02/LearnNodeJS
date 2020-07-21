@@ -78,5 +78,9 @@ exports.errorsResponse = {
   can_not_find_product: {
     key: "can_not_find_product",
     status: 404
+  },
+  product_name_must_be_string : {
+    key: "product_name_must_be_string",
+    status : 404
   }
 };

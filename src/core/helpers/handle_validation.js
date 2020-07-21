@@ -1,8 +1,6 @@
 const { ABORT_EARLY } = require("../../core/configuration/validation.config");
-const { date } = require("@hapi/joi");
 
-
-exports.createErrorObject = async (schema,data) => {
+exports.handleValidation = async (schema,data) => {
 
     const validation = { value: {}, error: [] };
     const { value, error } = await schema.validate(data, ABORT_EARLY);

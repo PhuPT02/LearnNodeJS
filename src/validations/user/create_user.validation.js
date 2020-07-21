@@ -2,9 +2,8 @@ const Joi = require("@hapi/joi");
 const {
   _REGEX_MAIL,
   _REGEX_PHONE,
-} = require("../../core/Constant/regularExpression.constant");
-const {errorsResponse} = require("../../core/Constant/errorsResponse.constant");
-const { createErrorObject } = require('../../core/helpers/createErrorObject');
+} = require("../../core/Constant/regular_expression.constant");
+const {errorsResponse} = require("../../core/Constant/errors_response.constant");
 
 
 const userValidationSchema = Joi.object().keys({
@@ -38,9 +37,5 @@ const userValidationSchema = Joi.object().keys({
    is_admin: Joi.boolean(),
 
 });
-
-const userValidation = async (data) => {
-  return createErrorObject(userSchema,data);
-};
 
 module.exports = { userValidationSchema };

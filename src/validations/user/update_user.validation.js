@@ -25,8 +25,4 @@ const updateUserSchema = Joi.object().keys({
   .message({"string.pattern.base": "Email invalid"}),
 });
 
-const updateUserValidation = (user) => {
-  return updateUserSchema.validate(user, ABORT_EARLY);
-};
-
-module.exports = { updateUserValidation };
+module.exports = { updateUserSchema };
