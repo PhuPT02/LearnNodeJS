@@ -1,4 +1,5 @@
 const productService = require('../services/product.service');
+const { createProductSchema } = require("../validations/product/create_product.validation");
 
 exports.getAll = (req, res) => {
     productService.getAll()

@@ -82,5 +82,49 @@ exports.errorsResponse = {
   product_name_must_be_string : {
     key: "product_name_must_be_string",
     status : 404
+  },
+  product_name_must_be_required:{
+    key: "product_name_must_be_required",
+    status: 400
+  },
+  product_price_must_be_number_type : {
+    key: "product_price_must_be_number_type",
+    status : 400
+  },
+  product_price_more_than_0 : {
+    key: "product_price_more_than_0",
+    status : 400
+  },
+  product_price_must_be_required : {
+    key: "product_price_must_be_required",
+    status : 400
+  },
+  product_promotionPrice_must_be_number_type: {
+    key : "product_promotionPrice_must_be_number_type",
+    status: 400
+  },
+  product_promotion_price_more_than_0: {
+    key : "product_promotion_price_more_than_0",
+    status: 400
+  },
+  product_description_must_be_string : {
+    key : "product_description_must_be_string",
+    status: 400
+  },
+  product_home_flag_must_be_boolean : {
+    key : "product_home_flag_must_be_boolean",
+    status : 400
+  },
+  product_hot_flag_must_be_boolean : {
+    key : "product_hot_flag_must_be_boolean",
+    status : 400
+  },
+  product_quantity_must_be_number_type : {
+    key: "product_quantity_must_be_number_type",
+    status : 400
+  },
+  product_quantity_more_than_0 : {
+    key: "product_quantity_more_than_0",
+    status : 400
   }
 };
