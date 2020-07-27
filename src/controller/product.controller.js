@@ -1,20 +1,5 @@
 const productService = require('../services/product.service');
-const { createProductSchema } = require("../validations/product/create_product.validation");
-
-exports.getAll = (req, res) => {
-    productService.getAll()
-        .then(product => res.send({ success: true, product }))
-        .catch(res.onError);
-};
-
-exports.getById = (req, res) => {
-
-    const { id } = req.params;
-
-    productService.getById(id)
-        .then(product => res.send({ success: true, product }))
-        .catch(res.onError)
-};
+const { createProductSchema } = require('../validations/product/create_product.validation');
 
 exports.createProduct = (req, res) => { 
     const value = {};
@@ -42,3 +27,15 @@ exports.removeProduct = (req, res) => {
         .then(product => res.send({ success: true, product }))
         .catch(res.onError)
 };
+
+exports.getAll = (req,res )=> {
+    productService.getAll()
+    .then(products=> res.send({success: true, products}))
+    .catch(res.onError)
+}
+
+exports.getById = (req,res)=>{
+    productService.getById()
+    .then(product => res.send({success: true, product}))
+    .catch(res.onError)
+}
